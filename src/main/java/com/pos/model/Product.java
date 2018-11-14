@@ -8,6 +8,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "PRODUCT")
@@ -30,18 +32,18 @@ public class Product implements Serializable {
 
     @Column(name = "HNS_CODE")
     private String hsnCode;
-    private String batch;
 
-    @Column(name = "EXPIRY_DATE")
-    @DateTimeFormat(pattern = "MM/YYYY")
-    private LocalDate expiryDate;
+    @Enumerated(EnumType.STRING)
+    private GST gst;
 
-    @Column(name = "COST_PRICE")
-    private Float costPrice;
+    @OneToMany(mappedBy = "product")
+    private List<Batch> batches;
 
-    @Column(name = "NUMBER_OF_BOXES")
-    private Integer numberOfBoxes;
-
-    @Column(name = "SELLING_PRICE")
-    private Float sellingPrice;
+    @ManyToMany
+    @JoinTable(
+            name = "PRODUCT_SUPPLIER",
+            joinColumns = {@JoinColumn(name = "PRODUCT_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "SUPPLIER_ID")}
+    )
+    private List<Supplier> suppliers;
 }

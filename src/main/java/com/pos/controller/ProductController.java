@@ -1,12 +1,11 @@
 package com.pos.controller;
 
+import com.pos.model.Batch;
 import com.pos.model.Product;
+import com.pos.model.Supplier;
 import com.pos.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,18 +32,18 @@ public class ProductController {
         return productService.findProductPerPage(offset, size);
     }
 
-    @GetMapping("/sort")
+/*    @GetMapping("/sort")
     public List<Product> getSortedListOfProduct(@RequestParam(defaultValue = "0") int offset,
                                                 @RequestParam(defaultValue = "10") int size,
                                                 @RequestParam String param,
                                                 @RequestParam(defaultValue = "asc") String order) {
         return productService.sortProductBasedOfGivenPrameter(param, order, offset, size);
-    }
+    }*/
 
     @GetMapping("/expired")
-    public List<Product> getExpiredProduct(@RequestParam(defaultValue = "0") int offset,
-                                           @RequestParam(defaultValue = "10") int size) {
-        return productService.getExpiredProduct(offset, size);
+    public List<Batch> getExpiredProduct(@RequestParam(defaultValue = "0") int offset,
+                                         @RequestParam(defaultValue = "10") int size) {
+        return productService.getExpiredBatch(offset, size);
     }
 
     @GetMapping("/starting")
@@ -55,9 +54,14 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    public List<Product> getProductContaingGivenSearchString(@RequestParam(defaultValue = "0") int offset,
+    public List<Product> getProductContainingGivenSearchString(@RequestParam(defaultValue = "0") int offset,
                                                              @RequestParam(defaultValue = "10") int size,
                                                              @RequestParam String pattern) {
         return productService.searchProductWithSearchString(offset, size, pattern);
+    }
+
+    @GetMapping("/{productId}/supplier")
+    public List<Supplier> getSuppliersForGivenProduct(@PathVariable long productId) {
+        return productService.getAllSuppliersOfProduct(productId);
     }
 }

@@ -1,6 +1,9 @@
 package com.pos.service;
 
+import com.pos.model.Batch;
 import com.pos.model.Product;
+import com.pos.model.Supplier;
+import com.pos.repository.BatchRepository;
 import com.pos.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -16,10 +19,12 @@ import java.util.List;
 public class ProductService {
 
     private ProductRepository productRepository;
+    private BatchRepository batchRepository;
 
     @Autowired
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, BatchRepository batchRepository) {
         this.productRepository = productRepository;
+        this.batchRepository = batchRepository;
     }
 
     public List<Product> listAllProduct() {
@@ -35,7 +40,7 @@ public class ProductService {
         return productList;
     }
 
-    public List<Product> sortProductBasedOfGivenPrameter(String param, String order, int offset, int pageSize) {
+    /*public List<Product> sortProductBasedOfGivenPrameter(String param, String order, int offset, int pageSize) {
         List<Product> productList = new ArrayList<>();
 
         if(order.equals("asc")) {
@@ -46,13 +51,13 @@ public class ProductService {
             productRepository.findAll(pageable).forEach(p -> productList.add(p));
         }
         return productList;
-    }
+    }*/
 
-    public List<Product> getExpiredProduct(int offset, int pageSize) {
-        List<Product> productList = new ArrayList<>();
+    public List<Batch> getExpiredBatch(int offset, int pageSize) {
+        List<Batch> batchList = new ArrayList<>();
         Pageable pageable = PageRequest.of(offset, pageSize);
-        productRepository.findByExpiryDateBefore(LocalDate.now(), pageable).forEach(p -> productList.add(p));
-        return productList;
+        batchRepository.findByExpiryDateBefore(LocalDate.now(), pageable).forEach(p -> batchList.add(p));
+        return batchList;
     }
 
     public List<Product> searchProductThatStartsWithGivenCharacter(int offset, int pageSize, String c) {
@@ -67,5 +72,9 @@ public class ProductService {
         Pageable pageable = PageRequest.of(offset, pageSize);
         productRepository.findByNameIgnoreCaseContaining(search, pageable).forEach(p -> productList.add(p));
         return productList;
+    }
+
+    public List<Supplier> getAllSuppliersOfProduct(long productId) {
+        return productRepository.findById(productId).get().getSuppliers();
     }
 }
