@@ -46,4 +46,8 @@ public class Product implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "SUPPLIER_ID")}
     )
     private List<Supplier> suppliers;
+
+    @OneToMany(mappedBy = "product")
+    @JsonIgnore
+    private List<InvoiceEntry> invoiceEntries;
 }

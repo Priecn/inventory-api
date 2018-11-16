@@ -1,5 +1,5 @@
 package com.pos.model;
 
 public enum UnitOfMesurment {
-    PIECE, STRIP, BOX
+    PIECE, STRIP, BOX, ML, GR
 }
