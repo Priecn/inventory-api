@@ -34,5 +34,8 @@ public class Invoice implements Serializable {
     @OneToMany(mappedBy = "invoice")
     private List<InvoiceEntry> entries;
 
+    @OneToMany(mappedBy = "invoice")
+    private List<Payment> payments;
+    
     private Float total;
 }

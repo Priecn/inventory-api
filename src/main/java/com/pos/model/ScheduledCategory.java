@@ -1,5 +1,5 @@
 package com.pos.model;
 
 public enum ScheduledCategory {
-    A, B, C, D
+    C, C1, G, H, H1, K, N, X 
 }
